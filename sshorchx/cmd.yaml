@@ -1,0 +1,7 @@
+---
+exec:
+  - login: wanjat1@localhost
+    cmd:  |
+      whoami
+      ls -l
+---
