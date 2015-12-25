@@ -1,0 +1,113 @@
+# SSHOrch: YAML format/syntax
+
+# Start of document (YAML notation)
+---
+
+# Define aliases for user@host (optional)
+define-alias: |
+  my-machine = root@blackhost.com
+  friend-machine = joey@whitehost.com
+  justhost = @snicker.com
+  Phoebe = regina_phalange
+
+--- # Start of execution-sequence
+exec:
+  # RunTag: @ => [user]@[hostname] or alias
+  # NOTE:
+  #     1.  Under a given seq, same RunTag cannot exist more than ones. Aliases
+  #         and their values are considered as different RunTags.
+  #     2.  Under a given seq, all the RunTags get executed in parallel.
+  #     3.  Under a RunTag, all commands are executed in sequence.
+  - @: eve@snicker.com
+    cmd: whoami
+
+--- # Start of new execution-sequence
+exec:
+  # Another way
+  - @: eve@snicker.com
+    cmd: whoami
+
+---
+exec:
+  # Here user is current user
+  - @: @snicker.com
+    cmd: whoami
+
+---
+exec:
+# Alias for RunTag with current user
+  - @: justhost
+    cmd: whoami
+
+---
+exec:
+# User is eve, host is localhost
+  - @: Phoebe
+    cmd: whoami
+
+---
+exec:
+# Execute locally, just as in local shell
+# User as current-user, host is localhost/current-host
+  - @: @
+    cmd: |
+      whoami
+      hostname
+
+---
+exec:
+# Execute locally, just as in local shell
+# Alias pointing RunTag
+  - @: my-machine
+    # Entry: Mandatorily must contain either exec or quiet-exec
+    #   exec => command to run
+    #   quiet-exec => suppress output
+    #   expect => output that is expected (optional)
+    cmd: echo "Hello World"
+    out: Hello World
+    quiet-cmd: tar -xzvf foo.tar.gz  # Execution will proceed after completion, be patient
+---
+  - @: @
+    # Exec witout expect
+    cmd: ifconfig
+---
+exec:
+# Execute locally, just as in local shell
+    # Multi-line entry and multi-line expect
+  - @: justhost
+    cmd: |
+      uname
+      echo "Hello World" | md5sum
+    out: |
+      Linux
+      e59ff97941044f85df5297e1c302d260  -
+
+---
+exec:
+  - @: friend-machine
+  # Multi-line quiet-exec
+    quiet-cmd: |
+      cd /usr/src/linux-kernel
+      make clean all
+    # Execution will proceed after completion, be patient
+
+---
+exec:
+  # Will run on different RunTags (hosts) in parallel
+  - @: @
+    cmd: |
+      uname -a
+      whoami
+      hostname
+      echo "Bye"
+
+  - @: my_machine
+    cmd: hostname
+
+  - @: regina_phalange
+    cmd: echo "Hello World" | md5sum
+    out: e59ff97941044f85df5297e1c302d260  -
+
+
+# End of file/stream (YAML notation)
+...

@@ -48,7 +48,7 @@ func main() {
 
 	// parse the yaml doc
 	d := sshorch.NewDoc()
-	d.ParseYamlDoc(string(doc))
+	d.ParseYamlDoc(doc)
 	//d.PrintDoc()
 	for _, tuple := range d.GetAliasDefs() {
 		// alias, user, host

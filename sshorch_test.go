@@ -26,7 +26,7 @@ exec:
 // ExampleYamlParser demo yaml parser
 func ExampleYamlParser() {
 	d := sshorch.NewDoc()
-	d.ParseYamlDoc(execStr)
+	d.ParseYamlDoc([]byte(execStr))
 	d.PrintDoc()
 	// Output: {AliasDefs:my-machine = root@blackhost.com
 	// friend-machine = joey@whitehost.com

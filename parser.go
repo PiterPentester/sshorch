@@ -49,8 +49,8 @@ func (e *Doc) ParseAliasDefs() map[string]string {
 }
 
 // ParseYamlDoc parses the exec/doc
-func (e *Doc) ParseYamlDoc(execStr string) {
-	err := yaml.Unmarshal([]byte(execStr), e)
+func (e *Doc) ParseYamlDoc(execRune []byte) {
+	err := yaml.Unmarshal([]byte(execRune), e)
 	if err != nil {
 		log.Fatalln("Failed to unmarshal yaml string:", err)
 	}
