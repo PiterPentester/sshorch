@@ -1,6 +1,23 @@
+define-alias: |
+    my-machine = root@blackhost.com
+    friend-machine = joey@whitehost.com
 ---
 exec:
-  - login: wanjat1@localhost
+    - login: my-machine
+      cmd: echo "Hello World"
+      out: Hello World
+      quiet-cmd: tar -xzvf foo.tar.gz
+    - login: chandler@bob.com
+      cmd: |
+      echo "Chandler"
+      hostname
+      uname -a
+      ping janice.com
+    - login: friend-machine
+      cmd: md5sum 'Joey doesn't share food!'
+---
+exec:
+  - login: rachel@localhost
     cmd:  |
       whoami
       ls -l
