@@ -10,9 +10,9 @@ exec:
     - login: chandler@bob.com
       cmd: |
         echo "Chandler"
-          hostname
-          uname -a
-          ping janice.com
+        hostname
+        uname -a
+        ping janice.com
     - login: friend-machine
       cmd: md5sum 'Joey doesn\'t share food!'
 ---
